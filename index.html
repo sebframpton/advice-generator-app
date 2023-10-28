@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700&display=swap" rel="stylesheet">
+  <title>Frontend Mentor | Advice generator app</title>
+
+  <style>
+    .attribution { font-size: 11px; text-align: center; }
+    .attribution a { color: hsl(228, 45%, 44%); }
+	 body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+	background:hsl(218, 23%, 16%);
+	font-family: 'Manrope', sans-serif;
+}
+
+.card {
+    background-color: hsl(217, 19%, 24%);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+	max-width:500px;
+}
+
+div .card-content {
+	color: hsl(193, 38%, 86%);
+	  word-wrap: break-word;
+    font-size: 28px;
+    margin-bottom: 20px;
+	
+	padding:10px;
+}
+
+.card-id{
+	color:hsl(150, 100%, 66%);
+	font-size:12px;
+	font-weight:300;
+	font-family: 'Manrope', sans-serif;
+}
+
+button {
+    background-color: hsl(150, 100%, 66%);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 15px 15px;
+    transition: background-color 0.3s;
+}
+
+
+button:hover {
+    box-shadow: 0 0 6px hsl(150, 100%, 66%);
+}
+
+
+
+
+.footer {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   background-color: white;
+   color:black;
+   text-align: center;
+}
+
+.gray-box {
+ display: flex;
+  align-items: center;
+  justify-content: center;
+ text-align: center;
+ margin-bottom:-50px;
+  height: 60px;  
+   max-width:500px!important;
+}
+
+.gray-box div{
+  width: 444px;
+  height: 64px;
+}
+
+.pattern-divider{
+padding-bottom:10px;
+}
+.pattern-mobile{
+	visibility:hidden;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  
+.card {
+    background-color: hsl(217, 19%, 24%);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    text-align: center;
+	max-height:500px;
+	max-width:300px;
+	margin: auto;
+}
+
+.card-id{
+	color:hsl(150, 100%, 66%);
+	font-size:8px;
+	font-weight:300;
+	font-family: 'Manrope', sans-serif;
+}
+
+.pattern-divider{
+	visibility:hidden;
+}
+.pattern-mobile{
+	visibility:visible;
+padding-bottom:10px;
+
+}
+.footer {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   background-color: white;
+   color:black;
+   text-align: center;
+}
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+ 
+.pattern-divider{
+	display:hidden;
+}
+div .card-content {
+	color: hsl(193, 38%, 86%);
+	  word-wrap: break-word;
+    font-size: 28px;
+    margin-bottom: 20px;
+	
+	padding:10px;
+}
+@media only screen and (min-width: 768px){
+
+.pattern-divider{
+	display:hidden;
+}
+div .card-content {
+	color: hsl(193, 38%, 86%);
+	  word-wrap: break-word;
+    font-size: 28px;
+    margin-bottom: 20px;
+	
+	padding:10px;
+}
+
+}
+
+  </style>
+</head>
+<body>
+  <div class="card">
+  <div class="card-id" id="id"></div>
+        <div class="card-content" id="advice">
+		
+		<p>Advice #</p><!-- Advice ID goes here -->
+
+ 
+  </div>
+   <img class="pattern-divider" id="pattern-divider" src="images/pattern-divider-desktop.svg" alt="pattern-divider.svg">
+<img class="pattern-mobile" src="images/pattern-divider-mobile.svg" alt="pattern-mobile">
+   <div class="gray-box">
+   <div>
+        <button class="dice" onclick="fetchAdvice()"><img class="" src="images/icon-dice.svg" alt="icon-dice"></button>
+		</div>
+    </div>
+	</div>
+  
+	
+<script>
+  async function fetchAdvice() {
+    try {
+        const response = await fetch('https://api.adviceslip.com/advice');
+		
+        const data = await response.json();
+        const adviceElement = document.getElementById('advice');
+		const idElement = document.getElementById('id');
+	
+	
+
+    if (data && data.slip && data.slip.id && data.slip.advice) {
+            const adviceId = data.slip.id;
+            const adviceText = `"${data.slip.advice}"`;
+            adviceElement.textContent = `\n ${adviceText}\n`;
+			 idElement.textContent = `Advice # ${adviceId}\n`;
+        } else {
+            adviceElement.textContent = 'Failed to fetch advice. Please try again later.';
+        }
+    } catch (error) {
+        console.error('Error fetching advice:', error);
+        document.getElementById('advice').textContent = 'Failed to fetch advice. Please try again later.';
+    }
+	
+}
+
+</script>
+
+
+ <div class="footer">
+  <footer>
+    <p class="attribution">
+      Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
+      Coded by <a href="https://sebframpton.github.io/">Sebastian Frampton</a>.
+    </p>
+  </footer>
+  </div>
+  
+</body>
+</html>
